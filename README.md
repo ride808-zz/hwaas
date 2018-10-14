@@ -1,1 +1,1 @@
-# hwaas
+# hwaas   [![master](https://travis-ci.org/ride808/hwaas.svg?branch=master)](https://travis-ci.org/ride808/hwaas/branches) 
