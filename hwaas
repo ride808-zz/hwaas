@@ -1,0 +1,47 @@
+#!/bin/bash
+
+display_usage() {
+	echo -e "\nUsage:\n$0 <NUM WORKERS> <NUM CLIENTS>"
+  echo
+  echo -e "Available Commands:\n"
+  echo -e "   <NUM WORKERS> REQUIRED: Specify the number of workers that will be used to process the event Queue"
+  echo -e "   <NUM CLIENTS> REQUIRED: Specify the number of clients that will send messages onto the Queue"
+  echo
+  exit 1
+}
+
+if [ $# -eq 0 ]
+  then
+     echo "No Arguments Supplied"
+     display_usage
+fi
+
+if [ -z "$1" ]
+  then
+     echo "<NUM WORKERS> argument is missing."
+     display_usage
+fi
+
+if [ -z "$2" ]
+  then
+     echo "<NUM CLIENTS> argument is missing"
+     display_usage
+fi
+
+
+echo "Building New HWaaS Images..."
+docker-compose build  > /dev/null 2>&1
+
+echo "Running HWaaS Application"
+docker-compose up -d  > /dev/null 2>&1
+
+echo "Scaling Workers to $1 and Running $2 Clients"
+
+docker-compose scale worker=$1 > /dev/null 2>&1
+
+docker-compose logs -f worker | grep -i " Hello World" &
+
+docker-compose run -e CLIENTS=$2 client > /dev/null 2>&1
+
+docker-compose down
+
