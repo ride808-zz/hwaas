@@ -59,9 +59,9 @@ There's minimal risk of dropped hello worlds if a lot of rq workers / clients ar
 - Using Docker Compose
 
 	```
-docker-compose up -d
-docker-compose scale worker=1
-docker-compose logs -f worker | grep -i " Hello World" &
-docker-compose run -e CLIENTS=1 client 
-```
+    docker-compose up -d
+    docker-compose scale worker=1
+    docker-compose logs -f worker | grep -i " Hello World" &
+    docker-compose run -e CLIENTS=1 client 
+    ```
 
